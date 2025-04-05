@@ -1,0 +1,23 @@
+from zk import ZK, const
+
+# Nhập IP máy chấm công của bạn tại đây
+DEVICE_IP = '192.168.1.222'  # Bạn sửa IP này theo IP máy của bạn
+
+zk = ZK(DEVICE_IP, port=4370, timeout=5)
+conn = None
+
+try:
+    conn = zk.connect()
+    print("✅ Đã kết nối tới máy chấm công!")
+
+    # Lấy dữ liệu chấm công
+    attendances = conn.get_attendance()
+    print("📥 Danh sách chấm công:")
+    for att in attendances:
+        print(f"👤 UserID: {att.user_id} | 🕒 Thời gian: {att.timestamp}")
+
+    conn.disconnect()
+    print("🔌 Đã ngắt kết nối!")
+
+except Exception as e:
+    print(f"❌ Lỗi: {e}")
